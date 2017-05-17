@@ -13,7 +13,7 @@ def laser_data_acquisition(data):
     data.XL =delta_x_L
     data.YL =delta_y_L
     data.XR = delta_x_R
-    data.YL = delta_y_R
+    data.YR = delta_y_R
 
 def position():
     global L_axis
