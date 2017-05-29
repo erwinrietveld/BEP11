@@ -24,6 +24,7 @@ WARNING:
 #include <barc/Ultrasound.h>
 #include <barc/Encoder.h>
 #include <barc/ECU.h>
+#include <barc/laser_sensor.h>
 #include <Servo.h>
 #include "Maxbotix.h"
 #include <EnableInterrupt.h>
@@ -36,8 +37,8 @@ class Car {
     void initEncoders();
     void initRCInput();
     void initActuators();
-    void initSwitch();
     void armActuators();
+    void initSwitch();
     void writeToActuators(const barc::ECU& ecu);
     void writeToActuatorsRC(uint8_t rc_input_motor,uint8_t rc_input_servo);
     // Used for copying variables shared with interrupts to avoid read/write
@@ -58,7 +59,7 @@ class Car {
     void incBL();
     void calcThrottle();
     void calcSteering();
-    const int RC_or_CC =0;0
+    const int RC_or_CC =0;
   private:
     // Pin assignments
     const int ENC_FL_PIN = 8;
@@ -181,12 +182,14 @@ barc::ECU ecu;
 barc::ECU rc_inputs;
 barc::Encoder encoder;
 barc::Ultrasound ultrasound;
+barc::laser_sensor laser_sensor;
 
 ros::NodeHandle nh;
 
 ros::Publisher pub_encoder("encoder", &encoder);
 ros::Publisher pub_rc_inputs("rc_inputs", &rc_inputs);
 ros::Publisher pub_ultrasound("ultrasound", &ultrasound);
+ros::Publisher pub_laser_sensor("laser_sensor", &laser_sensor);
 ros::Subscriber<barc::ECU> sub_ecu("ecu_pwm", ecuCallback);
 
 
@@ -216,12 +219,12 @@ void setup()
   nh.advertise(pub_encoder);
   nh.advertise(pub_rc_inputs);
   nh.advertise(pub_ultrasound);
+  nh.advertise(pub_laser_sensor);
   nh.subscribe(sub_ecu);
 
   // Arming ESC, 1 sec delay for arming and ROS
   car.armActuators();
   t0 = millis();
-  car.
 
 }
 
